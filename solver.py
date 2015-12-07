@@ -3,7 +3,9 @@ import sys
 import string
 import re
 import string
-#https://github.com/ContinuumIO/pycosat/blob/master/examples/sudoku.py helped out in creation
+import time
+
+
 #only valid if the rows columns and blocks are correct
 def grid_size(n):
     return n*n
@@ -45,6 +47,10 @@ def sudoku_clauses(n):
         for i in 1, 6, 11, 16 ,21:
             for j in 1, 6, 11, 16 ,21:
                 valid([(i + k % 5, j + k // 5) for k in range(n)])
+    elif n == 16:
+        for i in 1, 5, 9, 13:
+            for j in 1, 5, 9, 13:
+                valid([(i + k % 4, j + k // 4) for k in range(n)])
     else:
         print "not valid"
     return res
@@ -58,7 +64,7 @@ def solve(grid,n):
             if d:
                 clauses.append([v(i, j, d,n)])
 
-    # solve the SAT problem need to add the import
+    # solve the SAT problem need 
     sol = set(pycosat.solve(clauses))
 
     def read_cell(i, j):
@@ -92,7 +98,7 @@ def parser(file):
     return matrix_res
 
 def doc_write(solution):
-    output = open("result.txt",'a')
+    output = open("result7.txt",'a')
 
     for line in solution:
         s = ''
@@ -106,8 +112,7 @@ def doc_write(solution):
 
 if __name__ == '__main__':
     from pprint import pprint
-    hard = parser('challenge1.txt')
-    # pprint(hard)
-    solve(hard,4)
-    # pprint(hard)
+    hard = parser('comp7.txt')
+
+    solve(hard,25)
     doc_write(hard)
